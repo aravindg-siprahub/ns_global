@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ───────────── Design tokens ─────────────
+   Flat editorial system: white + black bands, one solid purple.
+   No gradients, no glows, no glass. */
+:root {
+  --c-bg: 255 255 255;
+  --c-surface: 244 244 246;
+  --c-elevated: 232 232 236;
+  --c-fg: 0 0 0;
+  --c-muted: 84 84 94;       /* AA on white */
+  --c-line: 0 0 0;           /* used with low alpha */
+  --c-accent: 145 20 255;    /* #9114FF signature purple */
+  --c-accent2: 145 20 255;   /* kept as alias – single accent colour */
+  --line-alpha: 0.14;
+  --header-h: 72px;
+  color-scheme: light;
+}
+/* Locally-black bands (hero, carousel, products, footer) */
+.theme-dark {
+  --c-bg: 0 0 0;
+  --c-surface: 20 20 22;
+  --c-elevated: 34 34 38;
+  --c-fg: 255 255 255;
+  --c-muted: 178 178 188;
+  --c-line: 255 255 255;
+  --c-accent: 161 60 255;    /* lifted purple for AA on black */
+  --c-accent2: 161 60 255;
+  --line-alpha: 0.18;
+  background: rgb(var(--c-bg));
+  color: rgb(var(--c-fg));
+}
+
+/* Photos render in natural colour. (.duo kept as a no-op hook for image wrappers.) */
+.duo { isolation: isolate; }
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  html, body { overflow-x: clip; }
+  body {
+    @apply bg-ink text-fg font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: rgb(var(--c-accent)); color: #fff; }
+  h1, h2, h3, h4 { @apply font-display; font-weight: 700; letter-spacing: -0.02em; }
+  :focus-visible { outline: 2px solid rgb(var(--c-accent)); outline-offset: 3px; }
+}
+
+@layer components {
+  .container-x { @apply mx-auto w-full max-w-content px-gutter; }
+  .grid-12 { @apply grid grid-cols-4 gap-x-4 md:grid-cols-8 md:gap-x-6 lg:grid-cols-12; }
+  .hairline { border-color: rgb(var(--c-line) / var(--line-alpha)); }
+  .eyebrow { @apply font-mono text-label uppercase text-muted; }
+  /* signature short purple rule above headlines */
+  .rule { @apply inline-block h-[3px] w-10 bg-accent; }
+  .display-caps { @apply font-display font-black uppercase; letter-spacing: -0.015em; line-height: 0.92; }
+  /* former glass panels → flat surface */
+  .glass { background: rgb(var(--c-surface)); border: 1px solid rgb(var(--c-line) / var(--line-alpha)); }
+  /* highlight words → solid purple */
+  .text-gradient { color: rgb(var(--c-accent)); }
+  .link-underline { background: linear-gradient(currentColor 0 0) 0 100% / 0 2px no-repeat; transition: background-size .4s ease; }
+  .link-underline:hover, .link-underline:focus-visible { background-size: 100% 2px; }
+  .mask-line { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+}
+
+@keyframes hero-progress { from { width: 0 } to { width: 100% } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important; scroll-behavior: auto !important;
+  }
+}
