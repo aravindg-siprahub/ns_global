@@ -8,3 +8,4 @@ out
 # local tooling
 .claude/
 .env
+.next-*

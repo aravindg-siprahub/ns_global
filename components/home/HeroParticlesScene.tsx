@@ -5,15 +5,15 @@ import * as THREE from 'three';
 import { particleFragment, particleVertex } from './shaders/particles';
 
 /* ───────────── Tweakable constants ───────────── */
-export const POINT_COUNT_DESKTOP = 32000;
-export const POINT_COUNT_MOBILE = 12000;
-export const PETAL_COUNT = 4;
-export const ROWS_ACROSS = 44; // dots across each ribbon (halftone rows)
+export const POINT_COUNT_DESKTOP = 42000;
+export const POINT_COUNT_MOBILE = 14000;
+export const PETAL_COUNT = 3; // broad petals that read as one flowing form
+export const SPARKLE_RATIO = 0.015; // share of brighter twinkling specks
 export const ROTATION_PERIOD_S = 75; // one full Y turn
 export const TILT_DEG = 8; // ± X tilt
-export const BASE_TILT_RAD = -0.55; // tips the bloom toward the viewer
-export const DESKTOP_X = 0.45; // world units right of centre
-export const DESKTOP_SCALE = 0.86;
+export const BASE_TILT_RAD = -0.62; // tips the bloom toward the viewer
+export const DESKTOP_X = 0.1; // world units right of centre (sits behind the headline)
+export const DESKTOP_SCALE = 1.32;
 export const TILT_PERIOD_S = 20;
 export const NOISE_AMPLITUDE = 0.11;
 export const NOISE_FREQUENCY = 0.55;
@@ -21,9 +21,9 @@ export const UNFOLD = 1.0; // petal open/close strength
 export const INTRO_DURATION_S = 2.5;
 export const PARALLAX_MAX_RAD = 0.15;
 export const PARALLAX_LERP = 0.03; // per 60fps frame
-export const POINT_SIZE = 2.2;
+export const POINT_SIZE = 1.9;
 export const MAX_DPR = 1.75;
-export const COLORS = { dot: '#E6E6F0', tint: '#9B30FF' };
+export const COLORS = { dot: '#D4D4DE', tint: '#7C5CFF' }; // soft silver, faint violet
 /* ─────────────────────────────────────────────── */
 
 type FlowerProps = { running: boolean; reduced: boolean; mobile: boolean };
@@ -37,38 +37,36 @@ function Flower({ running, reduced, mobile }: FlowerProps) {
 
   const geometry = useMemo(() => {
     const count = mobile ? POINT_COUNT_MOBILE : POINT_COUNT_DESKTOP;
-    const perPetal = Math.floor(count / PETAL_COUNT);
-    const along = Math.floor(perPetal / ROWS_ACROSS);
-    const total = along * ROWS_ACROSS * PETAL_COUNT;
+    const total = count;
     const uv = new Float32Array(total * 2);
     const petal = new Float32Array(total * 2);
     const scatter = new Float32Array(total * 3);
-    let k = 0;
-    for (let p = 0; p < PETAL_COUNT; p++) {
-      const angle = (p / PETAL_COUNT) * Math.PI * 2 + (Math.random() - 0.5) * 0.25;
-      const phase = p * 1.7;
-      for (let i = 0; i < along; i++) {
-        for (let j = 0; j < ROWS_ACROSS; j++) {
-          // neat halftone rows + a little jitter so it isn't mechanical
-          uv[k * 2] = (i + (Math.random() - 0.5) * 0.35) / (along - 1);
-          uv[k * 2 + 1] = ((j + (Math.random() - 0.5) * 0.35) / (ROWS_ACROSS - 1)) * 2 - 1;
-          petal[k * 2] = angle;
-          petal[k * 2 + 1] = phase;
-          const r = 4 + Math.random() * 4;
-          const th = Math.random() * Math.PI * 2;
-          const ph = Math.acos(2 * Math.random() - 1);
-          scatter[k * 3] = r * Math.sin(ph) * Math.cos(th);
-          scatter[k * 3 + 1] = r * Math.sin(ph) * Math.sin(th);
-          scatter[k * 3 + 2] = r * Math.cos(ph);
-          k++;
-        }
-      }
+    const extra = new Float32Array(total * 3); // x: seed, y: thickness offset, z: sparkle flag
+    const angles = Array.from({ length: PETAL_COUNT }, (_, p) => (p / PETAL_COUNT) * Math.PI * 2 + (Math.random() - 0.5) * 0.3);
+    const gauss = () => (Math.random() + Math.random() + Math.random() - 1.5) / 1.5; // soft bell curve
+    for (let k = 0; k < total; k++) {
+      const p = k % PETAL_COUNT;
+      // random sampling (no rows) -> soft, sparkly cloud like a particle sculpture
+      uv[k * 2] = Math.pow(Math.random(), 0.9);
+      uv[k * 2 + 1] = gauss();
+      petal[k * 2] = angles[p];
+      petal[k * 2 + 1] = p * 1.9;
+      const r = 4 + Math.random() * 4;
+      const th = Math.random() * Math.PI * 2;
+      const ph = Math.acos(2 * Math.random() - 1);
+      scatter[k * 3] = r * Math.sin(ph) * Math.cos(th);
+      scatter[k * 3 + 1] = r * Math.sin(ph) * Math.sin(th);
+      scatter[k * 3 + 2] = r * Math.cos(ph);
+      extra[k * 3] = Math.random();
+      extra[k * 3 + 1] = gauss();
+      extra[k * 3 + 2] = Math.random() < SPARKLE_RATIO ? 1 : 0;
     }
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(total * 3), 3));
     g.setAttribute('aUV', new THREE.BufferAttribute(uv, 2));
     g.setAttribute('aPetal', new THREE.BufferAttribute(petal, 2));
     g.setAttribute('aScatter', new THREE.BufferAttribute(scatter, 3));
+    g.setAttribute('aExtra', new THREE.BufferAttribute(extra, 3));
     g.boundingSphere = new THREE.Sphere(new THREE.Vector3(), 10);
     return g;
   }, [mobile]);

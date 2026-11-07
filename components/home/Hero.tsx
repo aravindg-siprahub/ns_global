@@ -51,8 +51,8 @@ export function Hero() {
     <section aria-labelledby="hero-title" className="theme-dark relative isolate overflow-hidden pb-section pt-[var(--header-h)]">
       <HeroParticles paused={paused} className="absolute inset-x-0 top-0 -z-10 h-[90vh] w-full" />
       {/* contrast guard: keeps the headline readable over the sculpture */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[90vh] bg-gradient-to-r from-black/85 via-black/35 to-transparent lg:w-[70%] lg:via-black/50" />
-      <div aria-hidden className="pointer-events-none absolute right-0 top-0 -z-10 hidden h-[90vh] w-[42%] bg-gradient-to-l from-black/90 via-black/60 to-transparent lg:block" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[90vh] bg-gradient-to-r from-black/60 via-black/15 to-transparent lg:w-[65%] lg:via-black/20" />
+      <div aria-hidden className="pointer-events-none absolute right-0 top-0 -z-10 hidden h-[90vh] w-[40%] bg-gradient-to-l from-black/75 via-black/35 to-transparent lg:block" />
 
       <div className="container-x relative flex min-h-[72vh] items-center py-16">
         <div className="grid w-full items-center gap-12 lg:grid-cols-12">

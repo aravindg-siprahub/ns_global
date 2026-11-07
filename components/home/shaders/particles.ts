@@ -65,6 +65,7 @@ uniform vec3 uTint;
 attribute vec2 aUV;      // x: along ribbon 0..1, y: across ribbon -1..1
 attribute vec2 aPetal;   // x: petal angle, y: phase offset
 attribute vec3 aScatter; // intro start position
+attribute vec3 aExtra;   // x: seed, y: thickness offset, z: sparkle flag
 
 varying vec3 vColor;
 varying float vAlpha;
@@ -81,15 +82,18 @@ void main(){
   float breath = sin(uTime * 0.18 + phase);           // slow open / close per petal
 
   // Petal spine: radiates from the centre, bends in an S, lifts toward the viewer
-  float r = u * 2.5;
-  vec3 spine = vec3(r, sin(u * 3.14159) * 0.55 + sin(u * 6.28318) * 0.14, sin(u * 2.8) * 0.5);
+  float r = u * 2.8;
+  vec3 spine = vec3(r, sin(u * 3.14159) * 0.6 + sin(u * 6.28318) * 0.16, sin(u * 2.8) * 0.55);
 
   // Width: thin at the root, fanning out like a petal near the tip
-  float w = 0.05 + 0.85 * pow(max(sin(u * 3.14159 * 0.88), 0.0), 0.9);
+  float w = 0.08 + 1.1 * pow(max(sin(u * 3.14159 * 0.88), 0.0), 0.85);
 
   // ~1.5 turns of twist, gently unfolding
   float twist = u * 9.42478 + uUnfold * breath * 0.35 + phase * 0.2;
   vec3 pos = spine + vec3(0.0, cos(twist), sin(twist)) * v * w;
+  // volumetric fuzz: push each dot off the surface so edges are soft, not printed
+  pos += vec3(0.0, -sin(twist), cos(twist)) * aExtra.y * (0.05 + w * 0.06);
+  pos += vec3(sin(aExtra.x * 91.0), cos(aExtra.x * 57.0), sin(aExtra.x * 33.0)) * 0.025;
   pos.z += breath * 0.12 * u * u;
 
   // Arrange petals around the shared centre
@@ -110,12 +114,14 @@ void main(){
 
   float depth = -mv.z;
   float nearness = smoothstep(9.0, 4.5, depth);       // 1 = close to camera
-  gl_PointSize = clamp(uSize * (0.55 + nearness * 0.95) * (6.5 / depth), 1.0, 2.5) * uPixelRatio;
+  float sparkle = aExtra.z;
+  gl_PointSize = clamp(uSize * (0.5 + nearness * 0.9) * (6.5 / depth) * (1.0 + sparkle * 0.7), 0.9, 2.6) * uPixelRatio;
 
-  float edge = smoothstep(0.62, 1.0, abs(v));
-  float tint = clamp(edge * 0.8 + (1.0 - nearness) * 0.65, 0.0, 1.0);
-  vColor = mix(uDot, uTint, tint * 0.85);
-  vAlpha = (0.22 + nearness * 0.6) * (0.7 + 0.3 * (1.0 - u)) * uOpacity;
+  float edge = smoothstep(0.55, 1.0, abs(v));
+  float tint = clamp(edge * 0.35 + (1.0 - nearness) * 0.25, 0.0, 1.0);
+  vColor = mix(uDot, uTint, tint);
+  float twinkle = 0.65 + 0.35 * sin(uTime * (0.8 + aExtra.x * 2.2) + aExtra.x * 40.0);
+  vAlpha = (0.14 + nearness * 0.5) * (0.75 + 0.25 * (1.0 - u)) * twinkle * (1.0 + sparkle * 1.6) * uOpacity;
 }
 `;
 
