@@ -17,10 +17,10 @@ export function LogoMark({ className }: { className?: string }) {
 export function Logo({ className }: { className?: string }) {
   return (
     <span className={cn('inline-flex items-start gap-1.5 leading-none', className)}>
-      <span className="font-display text-[1.6rem] font-extrabold lowercase tracking-[-0.03em]">
+      <span className="font-display text-[1.35rem] font-extrabold lowercase tracking-[-0.03em]">
         ns<span className="text-accent">/</span>global
       </span>
-      <span className="mt-[3px] font-mono text-[0.58rem] font-medium uppercase tracking-[0.3em]">Tech</span>
+      <span className="mt-[2px] font-mono text-[0.52rem] font-medium uppercase tracking-[0.3em]">Tech</span>
     </span>
   );
 }

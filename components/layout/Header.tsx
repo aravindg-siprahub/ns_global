@@ -27,12 +27,34 @@ export function Header() {
   const [mobile, setMobile] = useState(false);
   const [search, setSearch] = useState(false);
   const timer = useRef<number>();
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setOpen(null);
     setMobile(false);
     setSearch(false);
   }, [pathname]);
+
+  // Dynamic header: hide while scrolling down, reveal on scroll up.
+  // Runs directly in the passive scroll handler (React skips no-op state updates).
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const delta = y - lastY;
+      if (Math.abs(delta) < 6 && y >= 120) return; // ignore jitter
+      setScrolled(y > 8);
+      if (y < 120) setHidden(false);
+      else setHidden(delta > 0);
+      lastY = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // never hide while a menu or overlay is open
+  const isHidden = hidden && !open && !mobile && !search;
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(null);
@@ -52,14 +74,21 @@ export function Header() {
   return (
     <>
       <a href="#main" className="sr-only z-[130] bg-black px-4 py-2 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to content</a>
-      <header className="fixed inset-x-0 top-0 z-[80] border-b hairline bg-ink" onMouseLeave={hide}>
+      <header
+        className={cn(
+          'theme-dark fixed inset-x-0 top-0 z-[80] transition-[transform,background-color,box-shadow] duration-500 ease-premium will-change-transform',
+          isHidden ? '-translate-y-full' : 'translate-y-0',
+          scrolled ? 'bg-black/95 shadow-[0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md' : 'bg-black',
+        )}
+        onMouseLeave={hide}
+      >
         <div className="container-x flex h-[var(--header-h)] items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <button type="button" className="grid h-10 w-10 place-items-center lg:hidden" aria-label="Open menu" aria-expanded={mobile} onClick={() => setMobile(true)}>
               <span aria-hidden className="flex flex-col gap-[5px]">
-                <span className="block h-[2px] w-6 bg-fg" />
-                <span className="block h-[2px] w-6 bg-fg" />
-                <span className="block h-[2px] w-6 bg-fg" />
+                <span className="block h-[2px] w-6 bg-white" />
+                <span className="block h-[2px] w-6 bg-white" />
+                <span className="block h-[2px] w-6 bg-white" />
               </span>
             </button>
             <Link href="/" aria-label="NS Global Tech home">
@@ -68,7 +97,7 @@ export function Header() {
           </div>
 
           <nav aria-label="Primary" className="hidden h-full lg:block">
-            <ul className="flex h-full items-stretch">
+            <ul className="flex h-full items-stretch gap-1 xl:gap-3">
               {nav.map((item) => (
                 <li key={item.key} className="flex" onMouseEnter={() => show(item.key)}>
                   <button
@@ -77,26 +106,29 @@ export function Header() {
                     aria-controls="mega-menu"
                     onClick={() => (open === item.key ? setOpen(null) : show(item.key))}
                     className={cn(
-                      'border-b-[3px] px-4 pt-[3px] text-[0.95rem] font-semibold transition-colors',
-                      open === item.key || pathname.startsWith(item.href) ? 'border-accent text-fg' : 'border-transparent text-fg/80 hover:text-fg',
+                      'group/nav flex items-center gap-1.5 border-b-2 px-3 pt-[2px] text-[0.95rem] font-normal text-white transition-colors',
+                      open === item.key || pathname.startsWith(item.href) ? 'border-accent' : 'border-transparent hover:border-white/40',
                     )}
                   >
                     {item.label}
+                    <svg viewBox="0 0 12 12" aria-hidden className={cn('h-3 w-3 transition-transform duration-300', open === item.key && 'rotate-180')}>
+                      <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                   </button>
                 </li>
               ))}
             </ul>
           </nav>
 
-          <div className="flex items-center gap-2">
-            <button type="button" onClick={() => setSearch(true)} aria-label="Search" className="grid h-10 w-10 place-items-center hover:text-accent">
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+          <div className="flex items-center gap-3 xl:gap-5">
+            <button type="button" onClick={() => setSearch(true)} aria-label="Search" className="grid h-11 w-11 place-items-center text-white transition-colors hover:text-accent">
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
                 <circle cx="11" cy="11" r="7" />
                 <path d="m20 20-4-4" />
               </svg>
             </button>
-            <Link href="/contact" className="hidden h-10 items-center bg-fg px-5 text-sm font-semibold text-ink transition-colors hover:bg-accent hover:text-white sm:inline-flex">
-              Contact us
+            <Link href="/contact" className="hidden items-center gap-1.5 py-2 text-[0.95rem] text-white sm:inline-flex">
+              <span className="link-underline">Contact us</span>
             </Link>
           </div>
         </div>

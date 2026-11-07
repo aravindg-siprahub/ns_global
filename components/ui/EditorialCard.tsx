@@ -29,7 +29,7 @@ export type EditorialCardProps = {
   height?: string;
 };
 
-export function EditorialCard({ variant, label, title, short, image, backLabel, description, items = [], primary, secondary, height = 'h-[520px]' }: EditorialCardProps) {
+export function EditorialCard({ variant, label, title, short, image, backLabel, description, items = [], primary, secondary, height = 'aspect-[2/3]' }: EditorialCardProps) {
   const f = fronts[variant % fronts.length];
   return (
     <article className="group [perspective:1600px]">
@@ -45,34 +45,34 @@ export function EditorialCard({ variant, label, title, short, image, backLabel, 
             <Image src={image} alt="" fill sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw" className="object-cover" />
             {f.overlay && <div className={cn('absolute inset-0', f.overlay)} />}
           </div>
-          <div className="relative p-7">
-            <p className="text-sm font-semibold uppercase tracking-wide">{label}</p>
-            <h3 className="mt-5 font-display text-[1.65rem] font-bold leading-tight">{title}</h3>
-            {short && <p className="mt-2 opacity-80">{short}</p>}
+          <div className="relative p-6 xl:p-8">
+            <p className="text-[0.8rem] font-semibold uppercase tracking-wide xl:text-[0.9rem]">{label}</p>
+            <h3 className="mt-4 font-display text-[1.3rem] font-semibold leading-[1.2] tracking-[-0.01em] xl:mt-5 xl:text-[1.55rem]">{title}</h3>
+            {short && <p className="mt-2 text-[0.95rem] opacity-80">{short}</p>}
           </div>
         </div>
 
         {/* Back */}
-        <div className="absolute inset-0 flex flex-col border border-white/20 bg-black p-7 text-white [backface-visibility:hidden] [transform:rotateY(180deg)]">
-          <p className="text-sm font-semibold uppercase tracking-wide text-white/60">{backLabel ?? label}</p>
-          <h3 className="mt-5 font-display text-[1.65rem] font-bold leading-tight">{title}</h3>
-          <p className="mt-3 text-white/80">{description}</p>
+        <div className="absolute inset-0 flex flex-col overflow-hidden border border-white/20 bg-black p-6 text-white xl:p-8 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+          <p className="text-[0.8rem] font-semibold uppercase tracking-wide text-white/60">{backLabel ?? label}</p>
+          <h3 className="mt-4 font-display text-[1.25rem] font-semibold leading-[1.2] xl:text-[1.4rem]">{title}</h3>
+          <p className="mt-3 line-clamp-3 text-[0.9rem] text-white/80">{description}</p>
           {items.length > 0 && (
-            <ul className="mt-6 space-y-2.5">
+            <ul className="mt-5 space-y-2">
               {items.map((c) => (
-                <li key={c} className="flex items-center gap-3 text-[0.95rem]">
+                <li key={c} className="flex items-center gap-3 text-[0.875rem]">
                   <span className="h-[2px] w-4 bg-white" aria-hidden />
                   {c}
                 </li>
               ))}
             </ul>
           )}
-          <div className="mt-auto flex items-center justify-between gap-4 pt-6">
-            <Link href={primary.href} className="inline-flex h-12 items-center bg-white px-6 font-semibold text-black transition-colors hover:bg-accent hover:text-white">
+          <div className="mt-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-5">
+            <Link href={primary.href} className="inline-flex h-11 items-center bg-white px-5 text-[0.9rem] font-semibold text-black transition-colors hover:bg-accent hover:text-white">
               {primary.label}
             </Link>
             {secondary && (
-              <Link href={secondary.href} className="font-semibold">
+              <Link href={secondary.href} className="text-[0.9rem] font-semibold">
                 <span className="link-underline">{secondary.label}</span> →
               </Link>
             )}

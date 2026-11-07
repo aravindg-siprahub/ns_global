@@ -19,7 +19,7 @@ export function ServicesScroll() {
           />
           <Link href="/contact" className="link-underline shrink-0 font-semibold">Book a free demo →</Link>
         </div>
-        <Reveal className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" stagger={0.06}>
+        <Reveal className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10 lg:gap-y-14" stagger={0.06}>
           {services.map((s, i) => (
             <div key={s.slug} data-reveal>
               <EditorialCard

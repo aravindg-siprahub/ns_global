@@ -39,6 +39,15 @@
 @layer base {
   html { -webkit-text-size-adjust: 100%; }
   html, body { overflow-x: clip; }
+  html { scroll-padding-top: calc(var(--header-h) + 1rem); -webkit-tap-highlight-color: transparent; }
+  a, button, [role="button"] { touch-action: manipulation; }
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  img { -webkit-user-drag: none; }
+  /* Lenis smooth scroll (desktop) */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-stopped { overflow: hidden; }
   body {
     @apply bg-ink text-fg font-sans antialiased;
     text-rendering: optimizeLegibility;

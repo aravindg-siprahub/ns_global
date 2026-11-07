@@ -64,7 +64,7 @@ export function Hero() {
             text={'Launch your\nIT career'}
             highlight={[2]}
             lineClassName={['', 'pl-[12%] lg:pl-[22%]']}
-            className="display-caps text-[clamp(2.75rem,7vw,7.75rem)] text-white lg:col-span-8"
+            className="display-caps text-[clamp(2.35rem,7vw,7.75rem)] text-white lg:col-span-8"
           />
           <div className="lg:col-span-4 lg:pl-6">
             <span className="rule w-12" aria-hidden />
@@ -85,7 +85,7 @@ export function Hero() {
           type="button"
           onClick={() => setPaused((p) => !p)}
           aria-label={paused ? 'Play background animation' : 'Pause background animation'}
-          className="absolute bottom-4 left-[var(--gutter,1rem)] grid h-8 w-8 place-items-center text-white md:left-gutter"
+          className="absolute bottom-2 left-gutter grid h-11 w-11 -translate-x-3 place-items-center text-white"
         >
           {paused ? (
             <span className="ml-0.5 h-0 w-0 border-y-[7px] border-l-[11px] border-y-transparent border-l-white" />
@@ -96,9 +96,9 @@ export function Hero() {
       </div>
 
       <div className="container-x">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           {featured.map((c, i) => (
-            <EditorialCard key={c.title} variant={i} {...c} height="h-[480px]" />
+            <EditorialCard key={c.title} variant={i} {...c} />
           ))}
         </div>
       </div>

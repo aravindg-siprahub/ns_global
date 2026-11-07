@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const news = [
   { title: 'Free demo classes every week across all our training programs', href: '/contact' },
@@ -16,6 +16,7 @@ const AUTO_MS = 6000;
 export function FooterNews() {
   const [i, setI] = useState(0);
   const [playing, setPlaying] = useState(true);
+  const startX = useRef<number | null>(null);
   const n = news.length;
   const go = (k: number) => setI(((k % n) + n) % n);
 
@@ -31,13 +32,21 @@ export function FooterNews() {
       <h2 className="font-display text-[clamp(2.25rem,4.5vw,4rem)] font-bold leading-none">NS Global news</h2>
 
       <div className="mt-12 overflow-hidden">
+        {/* --step = width of one item: 100% on phones (1 visible), 50% from md (2 visible) */}
         <ul
-          className="flex transition-transform duration-700 ease-[cubic-bezier(0.65,0,0.35,1)]"
-          style={{ transform: `translateX(-${i * 50}%)` }}
+          className="flex touch-pan-y transition-transform duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] [--step:100%] md:[--step:50%]"
+          style={{ transform: `translateX(calc(var(--step) * ${-i}))` }}
           aria-live="polite"
+          onPointerDown={(e) => (startX.current = e.clientX)}
+          onPointerUp={(e) => {
+            if (startX.current === null) return;
+            const dx = e.clientX - startX.current;
+            if (Math.abs(dx) > 50) go(i + (dx < 0 ? 1 : -1));
+            startX.current = null;
+          }}
         >
           {[...news, ...news.slice(0, 1)].map((item, k) => (
-            <li key={k} className="w-full shrink-0 pr-10 md:w-1/2" aria-hidden={k !== i && k !== i + 1}>
+            <li key={k} className="w-full shrink-0 pr-6 md:w-1/2 md:pr-10" aria-hidden={k !== i && k !== i + 1}>
               <Link href={item.href} className="block font-display text-[clamp(1.6rem,2.8vw,2.75rem)] font-bold leading-[1.15]">
                 <span className="link-underline">{item.title}</span>
               </Link>

@@ -26,17 +26,20 @@ export function VideoFeature() {
     <section aria-labelledby="video-title" className="py-section">
       <div className="container-x">
         <Heading id="video-title" eyebrow={video.eyebrow} title={video.title} size="lg" className="mb-12" />
-        <button type="button" onClick={() => setOpen(true)} className="group relative block aspect-video w-full overflow-hidden bg-black text-left" aria-label={`Play video: ${video.title}`}>
-          <Image src={video.poster} alt="" fill sizes="(min-width:1440px) 1440px, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.02]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-          <span className="absolute left-1/2 top-1/2 grid h-20 w-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-accent transition-transform duration-300 md:h-28 md:w-28">
-            <span className="ml-1.5 h-0 w-0 border-y-[14px] border-l-[22px] border-y-transparent border-l-white md:border-y-[18px] md:border-l-[28px]" aria-hidden />
+        <button type="button" onClick={() => setOpen(true)} className="group relative block w-full text-left" aria-label={`Play video: ${video.title}`}>
+          <span className="relative block aspect-video w-full overflow-hidden bg-black">
+            <Image src={video.poster} alt="" fill sizes="(min-width:1440px) 1440px, 100vw" className="object-cover transition-transform duration-700 ease-premium group-hover:scale-[1.02]" />
+            <span className="absolute inset-0 hidden bg-gradient-to-t from-black/70 via-black/10 to-transparent md:block" />
+            <span className="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-accent transition-transform duration-300 ease-premium group-hover:scale-105 sm:h-20 sm:w-20 md:h-28 md:w-28">
+              <span className="ml-1 h-0 w-0 border-y-[11px] border-l-[17px] border-y-transparent border-l-white sm:border-y-[14px] sm:border-l-[22px] md:ml-1.5 md:border-y-[18px] md:border-l-[28px]" aria-hidden />
+            </span>
           </span>
-          <span className="absolute bottom-6 left-6 right-6 flex flex-col gap-1 md:bottom-10 md:left-10 md:flex-row md:items-end md:justify-between">
+          {/* Phones: speakers sit under the video. Tablet/desktop: overlaid on it. */}
+          <span className="mt-5 flex flex-col gap-4 sm:flex-row sm:justify-between md:absolute md:bottom-10 md:left-10 md:right-10 md:mt-0 md:items-end">
             {video.speakers.map((sp) => (
               <span key={sp.name} className="block">
-                <span className="block font-display text-2xl font-black text-white md:text-4xl">{sp.name}</span>
-                <span className="mt-1 block border-t-2 border-accent pt-1 text-sm text-white/85">{sp.role}</span>
+                <span className="block font-display text-xl font-black text-fg md:text-4xl md:text-white">{sp.name}</span>
+                <span className="mt-1 block border-t-2 border-accent pt-1 text-sm text-muted md:text-white/85">{sp.role}</span>
               </span>
             ))}
           </span>
