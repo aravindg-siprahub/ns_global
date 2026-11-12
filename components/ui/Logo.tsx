@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 
 /**
- * Compact mark ("n/") for tight spaces — same geometry as the favicon in app/icon.svg.
+ * Compact mark ("n/") for tight spaces — same geometry as the favicon in app/icon2.svg.
  */
 export function LogoMark({ className }: { className?: string }) {
   return (

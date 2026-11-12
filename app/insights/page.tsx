@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/pages/PageHero';
 import { InsightCard } from '@/components/home/Insights';
 import { Reveal } from '@/components/ui/Reveal';
+import { SwipeRail } from '@/components/ui/SwipeRail';
 import { NewsletterForm } from '@/components/layout/NewsletterForm';
 import { insights } from '@/lib/content';
 
@@ -19,9 +20,9 @@ export default function InsightsPage() {
       <section className="py-section">
         <Reveal className="container-x">
           <div className="mb-20 max-w-4xl"><InsightCard item={cover} large /></div>
-          <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+          <SwipeRail label="More insights" grid="lg:grid-cols-4 lg:gap-x-8 lg:gap-y-14">
             {rest.map((i) => <InsightCard key={i.slug} item={i} />)}
-          </div>
+          </SwipeRail>
         </Reveal>
       </section>
       <section className="pb-section">

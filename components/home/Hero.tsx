@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { AnimatedText } from '@/components/ui/AnimatedText';
 import { EditorialCard } from '@/components/ui/EditorialCard';
+import { SwipeRail } from '@/components/ui/SwipeRail';
 import { HeroParticles } from './HeroParticles';
 import { unsplash } from '@/lib/utils';
 
@@ -11,6 +12,7 @@ const featured = [
     label: 'Trending course',
     title: 'Snowflake: master the data cloud',
     image: unsplash('photo-1550751827-4bd374c3f58b', 900),
+    logo: '/logos/snowflake.svg',
     description: 'Data warehousing, SQL optimization and performance tuning — with real-world projects from day one.',
     primary: { label: 'Book a demo', href: '/contact?course=snowflake' },
     secondary: { label: 'Course details', href: '/services/snowflake' },
@@ -96,11 +98,11 @@ export function Hero() {
       </div>
 
       <div className="container-x">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+        <SwipeRail label="Featured" grid="lg:grid-cols-4 lg:gap-10">
           {featured.map((c, i) => (
             <EditorialCard key={c.title} variant={i} {...c} />
           ))}
-        </div>
+        </SwipeRail>
       </div>
     </section>
   );

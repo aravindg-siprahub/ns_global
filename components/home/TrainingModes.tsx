@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { trainingModes } from '@/lib/content';
 import { AnimatedText } from '@/components/ui/AnimatedText';
 import { Reveal } from '@/components/ui/Reveal';
+import { SwipeRail } from '@/components/ui/SwipeRail';
 
 /** Infosys-style: centred headline with one highlighted word, then soft rounded 3D-image cards */
 export function TrainingModes() {
@@ -25,9 +26,10 @@ export function TrainingModes() {
           </Link>
         </div>
 
-        <Reveal className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" stagger={0.07}>
+        <Reveal stagger={0.07}>
+          <SwipeRail label="Training formats" grid="lg:grid-cols-3 lg:gap-6">
           {trainingModes.map((m) => (
-            <article key={m.title} data-reveal className="group overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_40px_-12px_rgba(20,20,60,0.12)] transition-shadow duration-500 hover:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_24px_60px_-16px_rgba(20,20,60,0.25)]">
+            <article key={m.title} data-reveal className="group h-full overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_40px_-12px_rgba(20,20,60,0.12)] transition-shadow duration-500 hover:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_24px_60px_-16px_rgba(20,20,60,0.25)]">
               <div className="relative aspect-[16/10] overflow-hidden">
                 <Image src={m.image} alt="" fill sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
               </div>
@@ -41,6 +43,7 @@ export function TrainingModes() {
               </div>
             </article>
           ))}
+          </SwipeRail>
         </Reveal>
       </div>
     </section>

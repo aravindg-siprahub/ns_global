@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { CourseLogo } from './CourseLogo';
 
 /*
  * Tall editorial card (Accenture-style).
@@ -21,6 +22,8 @@ export type EditorialCardProps = {
   title: string;
   short?: string;
   image: string;
+  /** Technology logo shown after the title */
+  logo?: string;
   backLabel?: string;
   description: string;
   items?: string[];
@@ -29,7 +32,7 @@ export type EditorialCardProps = {
   height?: string;
 };
 
-export function EditorialCard({ variant, label, title, short, image, backLabel, description, items = [], primary, secondary, height = 'aspect-[2/3]' }: EditorialCardProps) {
+export function EditorialCard({ variant, label, title, short, image, logo, backLabel, description, items = [], primary, secondary, height = 'aspect-[2/3]' }: EditorialCardProps) {
   const f = fronts[variant % fronts.length];
   return (
     <article className="group [perspective:1600px]">
@@ -47,7 +50,10 @@ export function EditorialCard({ variant, label, title, short, image, backLabel, 
           </div>
           <div className="relative p-6 xl:p-8">
             <p className="text-[0.8rem] font-semibold uppercase tracking-wide xl:text-[0.9rem]">{label}</p>
-            <h3 className="mt-4 font-display text-[1.3rem] font-semibold leading-[1.2] tracking-[-0.01em] xl:mt-5 xl:text-[1.55rem]">{title}</h3>
+            <div className="mt-4 flex items-start justify-between gap-3 xl:mt-5">
+              <h3 className="font-display text-[1.3rem] font-semibold leading-[1.2] tracking-[-0.01em] xl:text-[1.55rem]">{title}</h3>
+              {logo && <CourseLogo src={logo} size="md" className="-mt-1" />}
+            </div>
             {short && <p className="mt-2 text-[0.95rem] opacity-80">{short}</p>}
           </div>
         </div>
@@ -55,7 +61,10 @@ export function EditorialCard({ variant, label, title, short, image, backLabel, 
         {/* Back */}
         <div className="absolute inset-0 flex flex-col overflow-hidden border border-white/20 bg-black p-6 text-white xl:p-8 [backface-visibility:hidden] [transform:rotateY(180deg)]">
           <p className="text-[0.8rem] font-semibold uppercase tracking-wide text-white/60">{backLabel ?? label}</p>
-          <h3 className="mt-4 font-display text-[1.25rem] font-semibold leading-[1.2] xl:text-[1.4rem]">{title}</h3>
+          <div className="mt-4 flex items-center gap-3">
+            <h3 className="font-display text-[1.25rem] font-semibold leading-[1.2] xl:text-[1.4rem]">{title}</h3>
+            {logo && <CourseLogo src={logo} size="xs" />}
+          </div>
           <p className="mt-3 line-clamp-3 text-[0.9rem] text-white/80">{description}</p>
           {items.length > 0 && (
             <ul className="mt-5 space-y-2">

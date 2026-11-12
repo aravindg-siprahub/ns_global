@@ -3,6 +3,7 @@ import { services } from '@/lib/content';
 import { Heading } from '@/components/ui/Heading';
 import { Reveal } from '@/components/ui/Reveal';
 import { EditorialCard } from '@/components/ui/EditorialCard';
+import { SwipeRail } from '@/components/ui/SwipeRail';
 
 /** Training programmes as Accenture-style flip cards */
 export function ServicesScroll() {
@@ -19,7 +20,8 @@ export function ServicesScroll() {
           />
           <Link href="/contact" className="link-underline shrink-0 font-semibold">Book a free demo →</Link>
         </div>
-        <Reveal className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-10 lg:gap-y-14" stagger={0.06}>
+        <Reveal stagger={0.06}>
+          <SwipeRail label="Training programs" grid="lg:grid-cols-4 lg:gap-x-10 lg:gap-y-14">
           {services.map((s, i) => (
             <div key={s.slug} data-reveal>
               <EditorialCard
@@ -28,6 +30,7 @@ export function ServicesScroll() {
                 title={s.title}
                 short={s.short}
                 image={s.image}
+                logo={s.logo}
                 backLabel={`${s.num} · ${s.level}`}
                 description={s.description}
                 items={s.capabilities}
@@ -36,6 +39,7 @@ export function ServicesScroll() {
               />
             </div>
           ))}
+          </SwipeRail>
         </Reveal>
       </div>
     </section>

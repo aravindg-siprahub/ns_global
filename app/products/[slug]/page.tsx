@@ -8,6 +8,8 @@ import { Card } from '@/components/ui/Card';
 import { Reveal } from '@/components/ui/Reveal';
 import { ButtonLink } from '@/components/ui/Button';
 import { Counter } from '@/components/ui/Counter';
+import { Heading } from '@/components/ui/Heading';
+import { SwipeRail } from '@/components/ui/SwipeRail';
 import { products, findBy } from '@/lib/content';
 
 type Params = { params: { slug: string } };
@@ -46,7 +48,7 @@ export default function ProductDetail({ params }: Params) {
       <section className="py-20">
         <div className="container-x">
           <div className="mx-auto max-w-5xl [perspective:1600px]">
-            <div className="[transform:rotateX(8deg)]">
+            <div className="md:[transform:rotateX(8deg)]">
               <ProductMockup product={p} step={1} />
             </div>
           </div>
@@ -55,17 +57,19 @@ export default function ProductDetail({ params }: Params) {
 
       <section id="features" className="py-section">
         <div className="container-x">
-          <p className="eyebrow mb-10">Features</p>
-          <Reveal className="grid gap-6 md:grid-cols-2">
-            {p.features.map((f, i) => (
-              <div data-reveal key={f.title}>
-                <Card className="h-full p-10">
-                  <span className="font-mono text-label" style={{ color: p.color }}>0{i + 1}</span>
-                  <h2 className="mt-6 text-3xl font-semibold">{f.title}</h2>
-                  <p className="mt-4 text-lg text-muted">{f.body}</p>
-                </Card>
-              </div>
-            ))}
+          <Heading eyebrow="Features" title={`Everything ${p.name} does for you.`} size="lg" className="mb-12 md:mb-16" />
+          <Reveal>
+            <SwipeRail label={`${p.name} features`} grid="lg:grid-cols-4 lg:gap-6">
+              {p.features.map((f, i) => (
+                <div data-reveal key={f.title} className="h-full">
+                  <Card className="flex h-full min-h-[17rem] flex-col p-6 md:p-8">
+                    <span className="grid h-10 w-10 place-items-center text-sm font-bold text-white" style={{ background: p.color }}>{String(i + 1).padStart(2, '0')}</span>
+                    <h3 className="mt-8 font-display text-2xl font-bold leading-tight">{f.title}</h3>
+                    <p className="mt-3 text-base leading-relaxed text-muted">{f.body}</p>
+                  </Card>
+                </div>
+              ))}
+            </SwipeRail>
           </Reveal>
         </div>
       </section>
@@ -79,19 +83,34 @@ export default function ProductDetail({ params }: Params) {
             return (
               <div key={m.label} className="px-6 py-16 md:px-12 md:py-24">
                 <Counter value={num} suffix={suffix} prefix={prefix} className="font-display text-[clamp(3rem,7vw,6rem)] font-semibold leading-none tracking-[-0.04em]" />
-                <p className="mt-4 font-mono text-label uppercase text-muted">{m.label}</p>
+                <p className="mt-3 text-base font-medium text-muted md:text-lg">{m.label.charAt(0).toUpperCase() + m.label.slice(1)}</p>
               </div>
             );
           })}
         </div>
       </section>
 
-      <section className="py-20">
-        <div className="container-x flex flex-wrap gap-3">
-          <span className="eyebrow mr-4 self-center">More products</span>
-          {products.filter((o) => o.slug !== p.slug).map((o) => (
-            <Link key={o.slug} href={`/products/${o.slug}`} className="rounded-full border hairline px-5 py-2.5 transition-colors hover:border-accent">{o.name} · <span className="text-muted">{o.category}</span></Link>
-          ))}
+      <section className="pt-section">
+        <div className="container-x">
+          <Heading eyebrow="More products" title="Explore the rest of the suite." size="md" className="mb-10 md:mb-12" />
+          <SwipeRail label="More products" grid="lg:grid-cols-2 lg:gap-6">
+            {products.filter((o) => o.slug !== p.slug).map((o, i) => (
+              <Link key={o.slug} href={`/products/${o.slug}`} className="theme-dark group flex h-full flex-col overflow-hidden">
+                <div className="pointer-events-none p-4 pb-0 md:p-6 md:pb-0">
+                  <ProductMockup product={o} step={(i + 1) % 4} className="-mb-10" />
+                </div>
+                <div className="relative z-[1] flex flex-1 flex-col bg-black p-6 md:p-8">
+                  <p className="text-sm font-semibold" style={{ color: o.color }}>{o.category}</p>
+                  <h3 className="mt-2 font-display text-3xl font-bold">{o.name}</h3>
+                  <p className="mt-2 text-lg text-white/75">{o.tagline}</p>
+                  <span className="mt-auto inline-flex items-center gap-2 pt-6 font-semibold">
+                    <span className="link-underline">Explore {o.name}</span>
+                    <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </SwipeRail>
         </div>
       </section>
       <CtaStrip title={`Put ${p.name} to work.`} cta="Book a demo" />

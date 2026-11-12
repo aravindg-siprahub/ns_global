@@ -34,7 +34,7 @@ export default function ArticlePage({ params }: Params) {
     datePublished: a.date,
     image: a.image,
     author: { '@type': 'Person', name: a.author },
-    publisher: { '@type': 'Organization', name: company.name, logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon.svg` } },
+    publisher: { '@type': 'Organization', name: company.name, logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` } },
   };
 
   return (

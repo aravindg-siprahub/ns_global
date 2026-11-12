@@ -8,12 +8,13 @@ import { MobileMenu } from './MobileMenu';
 import { SearchOverlay } from './SearchOverlay';
 import { nav, services, products, industries, insights, images } from '@/lib/content';
 import { cn } from '@/lib/utils';
+import { CourseLogo } from '@/components/ui/CourseLogo';
 
-type MenuLink = { label: string; href: string; desc?: string };
+type MenuLink = { label: string; href: string; desc?: string; logo?: string };
 type Panel = { intro: string; image: string; cta: { label: string; href: string }; links: MenuLink[] };
 
 const panels: Record<string, Panel> = {
-  services: { intro: 'End-to-end capabilities, from first strategy to always-on operations.', image: images.meeting, cta: { label: 'All services', href: '/services' }, links: services.map((s) => ({ label: s.title, href: `/services/${s.slug}`, desc: s.short })) },
+  services: { intro: 'End-to-end capabilities, from first strategy to always-on operations.', image: images.meeting, cta: { label: 'All services', href: '/services' }, links: services.map((s) => ({ label: s.title, href: `/services/${s.slug}`, desc: s.short, logo: s.logo })) },
   products: { intro: 'Software we build, own and run inside the world’s largest enterprises.', image: images.team, cta: { label: 'All products', href: '/products' }, links: products.map((p) => ({ label: p.name, href: `/products/${p.slug}`, desc: p.category })) },
   industries: { intro: 'Deep domain teams for the sectors that run the world.', image: images.city, cta: { label: 'All industries', href: '/industries' }, links: industries.map((i) => ({ label: i.title, href: `/industries/${i.slug}` })) },
   insights: { intro: 'Research, perspectives and conversations on what comes next.', image: insights[0].image, cta: { label: 'All insights', href: '/insights' }, links: insights.slice(0, 4).map((i) => ({ label: i.title, href: `/insights/${i.slug}`, desc: i.type })) },
@@ -146,9 +147,12 @@ export function Header() {
               <ul className="col-span-5 grid content-start gap-x-8 sm:grid-cols-2">
                 {panel.links.map((l) => (
                   <li key={l.href} className="border-b hairline">
-                    <Link href={l.href} className="block py-4">
-                      <span className="link-underline font-semibold">{l.label}</span>
-                      {l.desc && <span className="mt-1 block text-sm text-muted">{l.desc}</span>}
+                    <Link href={l.href} className="flex items-center gap-4 py-4">
+                      <span className="min-w-0 flex-1">
+                        <span className="link-underline font-semibold">{l.label}</span>
+                        {l.desc && <span className="mt-1 block text-sm text-muted">{l.desc}</span>}
+                      </span>
+                      {l.logo && <CourseLogo src={l.logo} size="sm" />}
                     </Link>
                   </li>
                 ))}
