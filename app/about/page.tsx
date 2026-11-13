@@ -10,7 +10,7 @@ import { images, values, company } from '@/lib/content';
 
 export const metadata: Metadata = {
   title: 'About us',
-  description: `Since ${company.founded}, NS Global Tech has helped the world’s leading organisations build, secure and run what comes next.`,
+  description: 'NS Global Tech is a Bangalore IT training institute: live classes, real-world projects, 1:1 mentoring and placement support until you are hired.',
   alternates: { canonical: '/about' },
 };
 
@@ -18,8 +18,6 @@ const timeline = [
   { year: '2008', text: 'Founded in Chennai by six engineers with one client and a big idea.' },
   { year: '2012', text: 'Opened London and New York. Crossed 1,000 people.' },
   { year: '2016', text: 'Launched Cloud and Cybersecurity practices.' },
-  { year: '2019', text: 'Released Flowgrid, our first product, now used by 300+ enterprises.' },
-  { year: '2022', text: 'Launched Helix and Sentinel. Became a top-10 security innovator.' },
   { year: '2026', text: '12,000 people in 28 countries, building the next decade of business.' },
 ];
 

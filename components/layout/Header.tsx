@@ -6,16 +6,25 @@ import { useEffect, useRef, useState } from 'react';
 import { Logo } from '@/components/ui/Logo';
 import { MobileMenu } from './MobileMenu';
 import { SearchOverlay } from './SearchOverlay';
-import { nav, services, products, industries, insights, images } from '@/lib/content';
+import { nav, services, product, industries, insights, images } from '@/lib/content';
 import { cn } from '@/lib/utils';
 import { CourseLogo } from '@/components/ui/CourseLogo';
 
 type MenuLink = { label: string; href: string; desc?: string; logo?: string };
-type Panel = { intro: string; image: string; cta: { label: string; href: string }; links: MenuLink[] };
+type Panel = { intro: string; image?: string; cta: { label: string; href: string }; links: MenuLink[] };
 
 const panels: Record<string, Panel> = {
   services: { intro: 'End-to-end capabilities, from first strategy to always-on operations.', image: images.meeting, cta: { label: 'All services', href: '/services' }, links: services.map((s) => ({ label: s.title, href: `/services/${s.slug}`, desc: s.short, logo: s.logo })) },
-  products: { intro: 'Software we build, own and run inside the world’s largest enterprises.', image: images.team, cta: { label: 'All products', href: '/products' }, links: products.map((p) => ({ label: p.name, href: `/products/${p.slug}`, desc: p.category })) },
+  products: {
+    intro: 'Career tools from NS Global Tech, starting with a resume-to-profile builder for Naukri and LinkedIn.',
+    cta: { label: `Open ${product.name}`, href: product.appHref },
+    links: [
+      { label: product.name, href: product.href, desc: `${product.category} · Naukri & LinkedIn` },
+      { label: 'Interactive demo', href: `${product.href}#showcase`, desc: 'See real output for every role' },
+      { label: `Open ${product.name}`, href: product.appHref, desc: `${services.length} IT career tracks with trending skills` },
+      { label: 'How it works', href: `${product.href}#how-it-works`, desc: 'Five steps, about 15 minutes' },
+    ],
+  },
   industries: { intro: 'Deep domain teams for the sectors that run the world.', image: images.city, cta: { label: 'All industries', href: '/industries' }, links: industries.map((i) => ({ label: i.title, href: `/industries/${i.slug}` })) },
   insights: { intro: 'Research, perspectives and conversations on what comes next.', image: insights[0].image, cta: { label: 'All insights', href: '/insights' }, links: insights.slice(0, 4).map((i) => ({ label: i.title, href: `/insights/${i.slug}`, desc: i.type })) },
   careers: { intro: '12,000 builders across 28 countries. There is room for one more.', image: images.careers, cta: { label: 'Open roles', href: '/careers#roles' }, links: [{ label: 'Life at NS Global', href: '/careers' }, { label: 'Open roles', href: '/careers#roles' }, { label: 'About us', href: '/about' }] },
@@ -157,9 +166,13 @@ export function Header() {
                   </li>
                 ))}
               </ul>
-              <div className="duo relative col-span-4 aspect-[4/3] overflow-hidden bg-black">
-                <Image src={panel.image} alt="" fill sizes="30vw" className="object-cover" />
-              </div>
+              {panel.image ? (
+                <div className="duo relative col-span-4 aspect-[4/3] overflow-hidden bg-black">
+                  <Image src={panel.image} alt="" fill sizes="30vw" className="object-cover" />
+                </div>
+              ) : (
+                <ProductMenuCard />
+              )}
             </div>
           </div>
         )}
@@ -167,5 +180,33 @@ export function Header() {
       <MobileMenu open={mobile} onClose={() => setMobile(false)} />
       <SearchOverlay open={search} onClose={() => setSearch(false)} />
     </>
+  );
+}
+
+/** Products mega-menu feature card */
+function ProductMenuCard() {
+  return (
+    <Link href={product.href} className="group relative col-span-4 flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#0d0e14] p-6">
+      <span aria-hidden className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#7c3aed]/35 blur-[70px] transition-opacity duration-500 group-hover:opacity-80" />
+      <span aria-hidden className="absolute -bottom-20 left-10 h-48 w-48 rounded-full bg-fuchsia-500/20 blur-[70px]" />
+      <span className="relative">
+        <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-zinc-300">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#A770FF]" /> New · {product.category}
+        </span>
+        <span className="mt-4 block font-display text-2xl font-bold tracking-tight text-white">{product.name}</span>
+        <span className="mt-2 block text-sm leading-relaxed text-zinc-400">{product.short}</span>
+      </span>
+      <span className="relative mt-6 flex items-center justify-between gap-4">
+        <span className="flex -space-x-1.5">
+          {services.map((r) => (
+            <span key={r.slug} className="grid h-7 w-7 place-items-center rounded-full bg-white ring-2 ring-[#0d0e14]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={r.logo} alt="" className="h-4 w-4 object-contain" />
+            </span>
+          ))}
+        </span>
+        <span className="text-sm font-semibold text-white transition-transform duration-300 group-hover:translate-x-1">Explore →</span>
+      </span>
+    </Link>
   );
 }

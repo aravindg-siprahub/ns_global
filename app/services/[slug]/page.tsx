@@ -11,6 +11,9 @@ import { ButtonLink } from '@/components/ui/Button';
 import { SwipeRail } from '@/components/ui/SwipeRail';
 import { CourseLogo } from '@/components/ui/CourseLogo';
 import { services, trainingModes, findBy } from '@/lib/content';
+import { ShareButtons } from '@/components/pages/ShareButtons';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { courseTitle, courseDescription, courseFaqs, courseJsonLd, courseUrl, faqJsonLd } from '@/lib/seo';
 
 type Params = { params: { slug: string } };
 
@@ -19,7 +22,16 @@ export const generateStaticParams = () => services.map((s) => ({ slug: s.slug })
 export function generateMetadata({ params }: Params): Metadata {
   const s = findBy(services, params.slug);
   if (!s) return {};
-  return { title: s.title, description: s.description, alternates: { canonical: `/services/${s.slug}` }, openGraph: { images: [s.image] } };
+  const title = courseTitle(s);
+  const description = courseDescription(s);
+  return {
+    title: { absolute: title },
+    description,
+    keywords: [`${s.title} training`, `${s.title} course`, `${s.title} training in Bangalore`, `${s.title} online training`, `${s.title} course with placement`, ...s.capabilities],
+    alternates: { canonical: `/services/${s.slug}` },
+    openGraph: { type: 'website', title, description, url: `/services/${s.slug}` },
+    twitter: { card: 'summary_large_image', title, description },
+  };
 }
 
 const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
@@ -30,6 +42,7 @@ export default function ServiceDetail({ params }: Params) {
   const idx = services.indexOf(s);
   const next = services[(idx + 1) % services.length];
   const others = [...services.slice(idx + 1), ...services.slice(0, idx)];
+  const faqs = courseFaqs(s);
 
   const facts = [
     { value: s.level, label: 'Course level' },
@@ -39,6 +52,8 @@ export default function ServiceDetail({ params }: Params) {
 
   return (
     <>
+      <JsonLd data={courseJsonLd(s)} />
+      <JsonLd data={faqJsonLd(faqs)} />
       <PageHero
         split
         eyebrow={`Course ${s.num}`}
@@ -53,6 +68,12 @@ export default function ServiceDetail({ params }: Params) {
           <ButtonLink href={`/contact?course=${s.slug}`} arrow>Book a free demo</ButtonLink>
           <ButtonLink href="#curriculum" variant="outline">See curriculum</ButtonLink>
         </div>
+        <ShareButtons
+          className="mt-8"
+          url={courseUrl(s)}
+          title={courseTitle(s)}
+          text={`${s.title} training with live classes, real projects and placement support at NS Global Tech, Bangalore 🚀`}
+        />
       </PageHero>
 
       {/* Key facts */}
@@ -103,6 +124,26 @@ export default function ServiceDetail({ params }: Params) {
               </article>
             ))}
           </SwipeRail>
+        </div>
+      </section>
+
+      {/* FAQ: answers the questions people search for */}
+      <section aria-labelledby="faq-title" className="py-section">
+        <div className="container-x grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <Heading id="faq-title" eyebrow="FAQ" title={`${s.title} course questions`} size="md" />
+          </div>
+          <div className="divide-y divide-fg/10 border-y hairline lg:col-span-8">
+            {faqs.map((f) => (
+              <details key={f.q} className="group py-5 md:py-6">
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-lg font-semibold md:text-xl [&::-webkit-details-marker]:hidden">
+                  {f.q}
+                  <span aria-hidden className="mt-1 grid h-7 w-7 shrink-0 place-items-center border border-fg/20 text-lg leading-none transition-transform duration-300 group-open:rotate-45 group-open:border-accent group-open:text-accent">+</span>
+                </summary>
+                <p className="mt-3 max-w-3xl text-base leading-relaxed text-muted md:text-lg">{f.a}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 

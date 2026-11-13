@@ -15,8 +15,12 @@ const nextConfig = {
     if (dev) config.watchOptions = { poll: 800, aggregateTimeout: 300, ignored: ['**/node_modules/**', '**/.next/**', '**/.next-*/**', '**/.claude/**'] };
     return config;
   },
+  // Retired demo products → the Profile Builder
+  async redirects() {
+    return ['helix', 'sentinel', 'flowgrid'].map((slug) => ({ source: `/products/${slug}`, destination: '/products/profile-builder', permanent: true }));
+  },
   experimental: {
-    optimizePackageImports: ['framer-motion', 'gsap'],
+    optimizePackageImports: ['framer-motion', 'gsap', 'lucide-react'],
   },
 };
 

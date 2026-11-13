@@ -11,4 +11,4 @@ export const GSAP_EASE = 'expo.out';
 export const unsplash = (id: string, w = 1600, q = 75) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=${q}`;
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://nsglobaltech.com';
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.nsglobaltech.com';
