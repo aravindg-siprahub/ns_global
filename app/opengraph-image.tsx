@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 import { company } from '@/lib/content';
 
 export const runtime = 'edge';
-export const alt = `${company.name} — ${company.tagline}`;
+export const alt = `${company.name} | ${company.tagline}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -25,8 +25,8 @@ export default function OgImage() {
           </svg>
           {company.name}
         </div>
-        <div style={{ display: 'flex', fontSize: 92, fontWeight: 700, lineHeight: 1, letterSpacing: -3, maxWidth: 1000 }}>{company.tagline}.</div>
-        <div style={{ display: 'flex', fontSize: 24, color: '#929BB6', letterSpacing: 4, textTransform: 'uppercase' }}>Consulting · Engineering · Products</div>
+        <div style={{ display: 'flex', fontSize: 92, fontWeight: 700, lineHeight: 1, letterSpacing: -3, maxWidth: 1000 }}>Launch your IT career.</div>
+        <div style={{ display: 'flex', fontSize: 24, color: '#929BB6', letterSpacing: 4, textTransform: 'uppercase' }}>Snowflake · Azure · Java · Salesforce · Testing</div>
       </div>
     ),
     size,

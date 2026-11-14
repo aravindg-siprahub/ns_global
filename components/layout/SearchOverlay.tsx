@@ -2,11 +2,12 @@
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { services, products, industries, insights, caseStudies } from '@/lib/content';
+import { services, product, industries, insights, caseStudies } from '@/lib/content';
 
 const index = [
   ...services.map((s) => ({ type: 'Service', title: s.title, text: s.short, href: `/services/${s.slug}` })),
-  ...products.map((p) => ({ type: 'Product', title: p.name, text: p.category, href: `/products/${p.slug}` })),
+  { type: 'Product', title: product.name, text: 'Naukri & LinkedIn profile builder', href: product.href },
+  { type: 'Product', title: `Open ${product.name}`, text: 'Build your profile now', href: product.appHref },
   ...industries.map((i) => ({ type: 'Industry', title: i.title, text: i.short, href: `/industries/${i.slug}` })),
   ...caseStudies.map((c) => ({ type: 'Case study', title: c.title, text: c.client, href: `/case-studies/${c.slug}` })),
   ...insights.map((i) => ({ type: i.type, title: i.title, text: i.category, href: `/insights/${i.slug}` })),

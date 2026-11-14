@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { AnimatedText } from '@/components/ui/AnimatedText';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { breadcrumbJsonLd } from '@/lib/seo';
 
 type Crumb = { label: string; href: string };
 type Props = {
@@ -23,6 +25,7 @@ type Props = {
 export function PageHero({ eyebrow, title, intro, image, imageAlt = '', crumbs = [], children, highlight, split = false, titleAside }: Props) {
   const copy = (
     <>
+      {crumbs.length > 0 && <JsonLd data={breadcrumbJsonLd(crumbs)} />}
       <nav aria-label="Breadcrumb" className="mb-8 md:mb-10">
         <ol className="flex flex-wrap items-center gap-2 font-mono text-label uppercase text-muted">
           <li><Link href="/" className="hover:text-fg">Home</Link></li>

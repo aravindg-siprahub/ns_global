@@ -10,9 +10,11 @@ import { unsplash } from './utils';
 export const company = {
   name: 'NS Global Tech',
   short: 'NSGlobal',
-  tagline: 'Engineering the next decade of business',
+  tagline: 'IT Training & Placement in Bangalore',
   description:
-    'NS Global Tech is a global technology company that pairs consulting, engineering and managed services with its own AI, security and automation products — helping enterprises move faster, safer and smarter.',
+    'Job-ready IT training in Bangalore: Snowflake, Informatica, DBT, Azure, Java Full Stack, Salesforce & testing. Live classes, real projects, 100% placement support.',
+  /** Real public profiles — used for search-engine "sameAs" links */
+  profiles: ['https://www.instagram.com/nsglobaltech/'],
   email: 'connect@nsglobaltech.com',
   phone: '+91 90322 20920',
   address: 'Building no 45, Srinivaspura Kogilu Main Road, Yelahanka, Bangalore 560064',
@@ -27,7 +29,7 @@ export const company = {
 
 export const nav = [
   { label: 'Services', href: '/services', key: 'services' },
-  { label: 'Products', href: '/products', key: 'products' },
+  { label: 'Products', href: '/products/profile-builder', key: 'products' },
   { label: 'Industries', href: '/industries', key: 'industries' },
   { label: 'Insights', href: '/insights', key: 'insights' },
   { label: 'Careers', href: '/careers', key: 'careers' },
@@ -54,55 +56,18 @@ export const services: Service[] = [
   { slug: 'salesforce', logo: '/logos/salesforce.svg', num: '08', title: 'Salesforce', level: 'Beginner to Advanced', short: 'Administer and build on Salesforce.', description: 'Master Salesforce CRM platform with comprehensive training on administration and development.', image: unsplash('photo-1667372393119-3d4c48d07fc9', 900), capabilities: ['CRM Administration', 'Apex Development', 'Lightning Components', 'Integration'], outcomes: support },
 ];
 
-export type Product = {
-  slug: string; name: string; category: string; tagline: string; description: string;
-  color: string; features: { title: string; body: string }[]; metrics: { value: string; label: string }[];
+/** Our one product. Landing page: /products/profile-builder, working app: /products/profile-builder/app */
+export const product = {
+  slug: 'profile-builder',
+  name: 'Profile Builder',
+  category: 'Career profile builder',
+  tagline: 'Your career profile. Engineered for opportunity.',
+  short: 'Turn your resume into recruiter-ready Naukri & LinkedIn profiles, for 8 IT career tracks.',
+  description:
+    'Upload your resume and get a ready-to-paste Naukri and LinkedIn profile: headlines, summaries, skills, projects and posts, tailored to your role. Free, and your resume never leaves your device.',
+  href: '/products/profile-builder',
+  appHref: '/products/profile-builder/app',
 };
-
-export const products: Product[] = [
-  {
-    slug: 'helix', name: 'Helix', category: 'AI analytics platform',
-    tagline: 'Ask your business anything.',
-    description:
-      'Helix unifies your data, models it automatically and answers questions in plain language — with every number traced back to its source.',
-    color: '#7B5CFF',
-    features: [
-      { title: 'Natural-language analytics', body: 'Type a question, get a governed chart, a narrative and the SQL behind it.' },
-      { title: 'Forecasts that explain themselves', body: 'Driver-based models show what moved the number, not just where it is going.' },
-      { title: 'Agents that take action', body: 'Trigger workflows, alerts and approvals straight from an insight.' },
-      { title: 'Governed by design', body: 'Row-level security, lineage and audit trails on every answer.' },
-    ],
-    metrics: [{ value: '10×', label: 'faster analysis' }, { value: '200+', label: 'native connectors' }],
-  },
-  {
-    slug: 'sentinel', name: 'Sentinel', category: 'Cloud security suite',
-    tagline: 'See every risk. Close it before it matters.',
-    description:
-      'Sentinel continuously maps your multi-cloud estate, ranks risk by real exploitability and fixes misconfigurations automatically.',
-    color: '#22D3EE',
-    features: [
-      { title: 'Live attack-path graph', body: 'Visualise how an attacker could move through identities, workloads and data.' },
-      { title: 'Risk ranked by context', body: 'Prioritise the 2% of findings that are actually exploitable.' },
-      { title: 'One-click remediation', body: 'Policy-as-code fixes, pushed as pull requests to your pipelines.' },
-      { title: 'Continuous compliance', body: 'SOC 2, ISO 27001, PCI DSS and HIPAA evidence, always audit-ready.' },
-    ],
-    metrics: [{ value: '98%', label: 'alert noise removed' }, { value: '<5 min', label: 'to first insight' }],
-  },
-  {
-    slug: 'flowgrid', name: 'Flowgrid', category: 'Enterprise workflow automation',
-    tagline: 'Work that runs itself.',
-    description:
-      'Flowgrid turns fragmented processes into intelligent, auditable workflows that span every system, team and approval.',
-    color: '#A78BFA',
-    features: [
-      { title: 'Visual process designer', body: 'Model complex, branching workflows in minutes — no code required.' },
-      { title: 'AI document understanding', body: 'Read invoices, contracts and claims with human-level accuracy.' },
-      { title: 'Connect anything', body: 'SAP, Salesforce, ServiceNow, Workday and 400+ more out of the box.' },
-      { title: 'Process mining', body: 'Find bottlenecks automatically and measure every improvement.' },
-    ],
-    metrics: [{ value: '70%', label: 'less manual effort' }, { value: '400+', label: 'integrations' }],
-  },
-];
 
 export type Industry = { slug: string; title: string; short: string; description: string; image: string; focus: string[] };
 

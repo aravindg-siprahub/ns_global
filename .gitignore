@@ -9,3 +9,9 @@ out
 .claude/
 .env
 .next-*
+
+.vercel
+.env*
+
+# copied from node_modules by "npm run copy-pdf-worker"
+public/pdf.worker.min.mjs

@@ -1,0 +1,10 @@
+# Keep CLI uploads (`npx vercel --prod`) to source only — Vercel builds it fresh
+node_modules
+.next
+.next-*
+.claude
+.vercel
+.env
+.env*
+*.tsbuildinfo
+out

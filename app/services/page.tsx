@@ -5,18 +5,22 @@ import { PageHero } from '@/components/pages/PageHero';
 import { CtaStrip } from '@/components/pages/CtaStrip';
 import { Reveal } from '@/components/ui/Reveal';
 import { services } from '@/lib/content';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { courseListJsonLd } from '@/lib/seo';
 import { CourseLogo } from '@/components/ui/CourseLogo';
 
 export const metadata: Metadata = {
-  title: 'Services',
-  description: 'AI & Data, Cloud, Cybersecurity, Digital Engineering, Consulting and Managed Services — end to end, from one accountable partner.',
+  title: 'IT Courses in Bangalore: Snowflake, Azure, Java, Salesforce',
+  description: 'Job-ready IT courses in Bangalore: Snowflake, Informatica, DBT, Business Analyst, Java Full Stack, Testing, Azure and Salesforce. Live classes, real projects, 100% placement support.',
+  keywords: ['IT courses in Bangalore', 'IT training institute Bangalore', 'software training with placement', 'Snowflake course', 'Azure course', 'Java full stack course', 'Salesforce course', 'testing course'],
   alternates: { canonical: '/services' },
 };
 
 export default function ServicesPage() {
   return (
     <>
-      <PageHero eyebrow="Services" title={'From first idea\nto always on.'} highlight={[3, 4]} crumbs={[{ label: 'Services', href: '/services' }]} intro="Six capabilities that work as one team — so strategy, build and run never get lost in the handover." />
+      <JsonLd data={courseListJsonLd(services)} />
+      <PageHero eyebrow="IT courses in Bangalore" title={'Courses that\nget you hired.'} highlight={[4]} crumbs={[{ label: 'Services', href: '/services' }]} intro="Eight job-ready programs in data, cloud, testing and full-stack development, each with live classes, real projects and 100% placement support." />
       <section className="py-section">
         <Reveal className="container-x divide-y divide-fg/10 border-y hairline">
           {services.map((s) => (
