@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
 import { AnimatedText } from '@/components/ui/AnimatedText';
 import { EditorialCard } from '@/components/ui/EditorialCard';
 import { SwipeRail } from '@/components/ui/SwipeRail';
@@ -47,11 +46,9 @@ const featured = [
  * row of four editorial cards beneath.
  */
 export function Hero() {
-  const [paused, setPaused] = useState(false);
-
   return (
     <section aria-labelledby="hero-title" className="theme-dark relative isolate overflow-hidden pb-section pt-[var(--header-h)]">
-      <HeroParticles paused={paused} className="absolute inset-x-0 top-0 -z-10 h-[90vh] w-full" />
+      <HeroParticles paused={false}className="absolute inset-x-0 top-0 -z-10 h-[90vh] w-full" />
       {/* contrast guard: keeps the headline readable over the sculpture */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[90vh] bg-gradient-to-r from-black/60 via-black/15 to-transparent lg:w-[65%] lg:via-black/20" />
       <div aria-hidden className="pointer-events-none absolute right-0 top-0 -z-10 hidden h-[90vh] w-[40%] bg-gradient-to-l from-black/75 via-black/35 to-transparent lg:block" />
@@ -83,18 +80,6 @@ export function Hero() {
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setPaused((p) => !p)}
-          aria-label={paused ? 'Play background animation' : 'Pause background animation'}
-          className="absolute bottom-2 left-gutter grid h-11 w-11 -translate-x-3 place-items-center text-white"
-        >
-          {paused ? (
-            <span className="ml-0.5 h-0 w-0 border-y-[7px] border-l-[11px] border-y-transparent border-l-white" />
-          ) : (
-            <span className="flex gap-[4px]"><span className="h-4 w-[4px] bg-white" /><span className="h-4 w-[4px] bg-white" /></span>
-          )}
-        </button>
       </div>
 
       <div className="container-x">

@@ -15,7 +15,7 @@ const AUTO_MS = 6000;
 /** Large-headline news slider with square pause / prev / next controls */
 export function FooterNews() {
   const [i, setI] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const playing = true;
   const startX = useRef<number | null>(null);
   const n = news.length;
   const go = (k: number) => setI(((k % n) + n) % n);
@@ -56,19 +56,7 @@ export function FooterNews() {
       </div>
 
       <div className="mt-12 flex items-center justify-between">
-        <button
-          type="button"
-          onClick={() => setPlaying((p) => !p)}
-          aria-label={playing ? 'Pause news' : 'Play news'}
-          className="grid h-14 w-14 place-items-center bg-white/10 transition-colors hover:bg-white/20"
-        >
-          {playing ? (
-            <span className="flex gap-[4px]"><span className="h-4 w-[4px] bg-white" /><span className="h-4 w-[4px] bg-white" /></span>
-          ) : (
-            <span className="ml-1 h-0 w-0 border-y-[8px] border-l-[12px] border-y-transparent border-l-white" />
-          )}
-        </button>
-        <div className="flex gap-4">
+        <div className="ml-auto flex gap-4">
           <button type="button" onClick={() => go(i - 1)} aria-label="Previous news" className="grid h-14 w-14 place-items-center bg-white/10 text-2xl transition-colors hover:bg-white/20">←</button>
           <button type="button" onClick={() => go(i + 1)} aria-label="Next news" className="grid h-14 w-14 place-items-center bg-white/10 text-2xl transition-colors hover:bg-white/20">→</button>
         </div>

@@ -1,3 +1,5 @@
+'use client';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -34,11 +36,20 @@ export type EditorialCardProps = {
 
 export function EditorialCard({ variant, label, title, short, image, logo, backLabel, description, items = [], primary, secondary, height = 'aspect-[2/3]' }: EditorialCardProps) {
   const f = fronts[variant % fronts.length];
+  const [flipped, setFlipped] = useState(false);
+  // touch screens: tap toggles the flip (links inside still navigate)
+  const onTap = (e: React.MouseEvent) => {
+    if (window.matchMedia('(hover: hover)').matches) return;
+    if ((e.target as HTMLElement).closest('a')) return;
+    setFlipped((v) => !v);
+  };
   return (
     <article className="group [perspective:1600px]">
       <div
+        onClick={onTap}
         className={cn(
           'relative w-full transition-transform duration-700 [transform-style:preserve-3d] motion-reduce:transition-none [@media(hover:hover)]:group-hover:[transform:rotateY(180deg)] [@media(hover:hover)]:group-focus-within:[transform:rotateY(180deg)]',
+          flipped && '[transform:rotateY(180deg)]',
           height,
         )}
       >
@@ -89,9 +100,7 @@ export function EditorialCard({ variant, label, title, short, image, logo, backL
         </div>
       </div>
 
-      <Link href={secondary?.href ?? primary.href} className="mt-3 block font-semibold [@media(hover:hover)]:hidden">
-        <span className="link-underline">{secondary?.label ?? primary.label}</span> →
-      </Link>
+      <p className="mt-3 text-sm font-semibold opacity-70 [@media(hover:hover)]:hidden">Tap card to flip ↻</p>
     </article>
   );
 }
