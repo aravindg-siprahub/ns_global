@@ -15,7 +15,7 @@ export const company = {
     'Job-ready IT training in Bangalore: Snowflake, Informatica, DBT, Azure, Java Full Stack, Salesforce & testing. Live classes, real projects, 100% placement support.',
   /** Real public profiles — used for search-engine "sameAs" links */
   profiles: ['https://www.instagram.com/nsglobaltech/'],
-  email: 'connect@nsglobaltech.com',
+  email: 'nsglobaltechno@gmail.com',
   phone: '+91 90322 20920',
   address: 'Building no 45, Srinivaspura Kogilu Main Road, Yelahanka, Bangalore 560064',
   founded: 2008,

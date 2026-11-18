@@ -55,7 +55,7 @@ export default function CareersPage() {
           <Heading eyebrow="Open roles" title="Find your next challenge." size="lg" className="mb-12" />
           <Reveal className="divide-y divide-fg/10 border-y hairline">
             {roles.map((r) => (
-              <a key={r.title} data-reveal href={`mailto:careers@nsglobaltech.com?subject=${encodeURIComponent(r.title)}`} className="group grid items-center gap-2 py-7 md:grid-cols-12" data-cursor="label" data-cursor-label="Apply">
+              <a key={r.title} data-reveal href={`mailto:nsglobaltechno@gmail.com?subject=${encodeURIComponent(r.title)}`} className="group grid items-center gap-2 py-7 md:grid-cols-12" data-cursor="label" data-cursor-label="Apply">
                 <span className="text-2xl font-semibold md:col-span-6">{r.title}</span>
                 <span className="text-muted md:col-span-3">{r.team}</span>
                 <span className="font-mono text-label uppercase text-muted md:col-span-2">{r.location}</span>
